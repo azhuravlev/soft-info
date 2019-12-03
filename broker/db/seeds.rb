@@ -7,6 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 if admin_token = ENV.fetch("ADMIN_TOKEN")
-  admin = User.find_by_login('admin') || User.create { |u| u.login = 'admin'; u.role = 'admin' }
-  admin.update(token: admin_token)
+  admin = User.first_or_create(email: 'admin@admin')
+  admin.update(token: admin_token, role: 'admin')
 end

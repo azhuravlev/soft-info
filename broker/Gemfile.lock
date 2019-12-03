@@ -59,6 +59,7 @@ GEM
     bindex (0.8.1)
     builder (3.2.3)
     byebug (11.0.1)
+    cancancan (3.0.1)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
     erubi (1.9.0)
@@ -129,6 +130,8 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2019.3)
       tzinfo (>= 1.0.0)
+    warden (1.2.8)
+      rack (>= 2.0.6)
     web-console (4.0.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -144,11 +147,13 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  cancancan
   jbuilder (~> 2.7)
   mysql2 (>= 0.4.4)
   puma (~> 4.1)
   rails (~> 6.0.1)
   tzinfo-data
+  warden
   web-console (>= 3.3.0)
 
 RUBY VERSION
