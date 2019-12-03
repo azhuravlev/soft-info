@@ -14,6 +14,8 @@ require "action_controller/railtie"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
+require_relative '../lib/authentication/token_strategy'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -34,6 +36,14 @@ module Broker
     config.middleware.delete ::ActionDispatch::Cookies
     config.middleware.delete ::ActionDispatch::Session::CookieStore
     config.middleware.delete ::ActionDispatch::Flash
+
+    config.api_only = true
+    config.middleware.insert_after ActiveRecord::Migration::CheckPending,  Warden::Manager do |manager|
+      manager.default_strategies :token
+      manager.failure_app = Proc.new do |env|
+        ['401', {'Content-Type' => 'application/json'}, [{ error: 'Unauthorized', code: 401 }.to_json]]
+      end
+    end
 
     # Don't generate system test files.
     config.generators.system_tests = nil
