@@ -11,6 +11,17 @@
 
 ![Архитектура](arch.png)
 
+
+### Запуск приложения
+
+    docker-compose up --build
+
+### Инициализация БД, полсе первого запуска:
+
+    docker-compose run --rm broker_app bin/rails db:setup
+
+После этого на порту 3123 станет доступен брокер
+
 # ToDo
 
 * Закончить Broker
