@@ -20,7 +20,9 @@
 
     docker-compose run --rm broker_app bin/rails db:setup
 
-После этого на порту 3123 станет доступен брокер
+После этого на порту 3123 станет доступен брокер, например для получения списка пользователей:
+
+    curl 'http://localhost:3123/api/v1/users' -H 'X-Auth-Token: 123o123t123u123s' -H "Content-Type:application/json"
 
 # ToDo
 
