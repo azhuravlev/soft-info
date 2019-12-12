@@ -1,0 +1,224 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "basePath": "/api/v1",
+  "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "test@test.test"
+        },
+        "token": {
+          "type": "string",
+          "example": "123123123123"
+        },
+        "role": {
+          "type": "string",
+          "example": "Only in admin requests"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "responses": {
+          "200": {
+            "examples": {
+              "application/json; charset=utf-8": "[{\"email\":\"john-doe16@test.test\",\"token\":\"f6287bcf7debb59c544d79c3436202376b9e0bec17a117ce1dcd230bc81db6a1\"}]"
+            },
+            "description": "Return user"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access for unknown token"
+          }
+        },
+        "parameters": [
+          {
+            "name": "HTTP_X_AUTH_TOKEN",
+            "in": "header",
+            "type": "string",
+            "description": "AUTH token"
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"email\":\"test@test.com\",\"token\":\"d36d6106cefe84f43042a42c9ab0571250fb32b5e70df7b5ee66d1c85e2fb3b2\"}"
+            },
+            "description": "Creates user with given email"
+          },
+          "422": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"email\":[\"can't be blank\",\"is invalid\"]}"
+            },
+            "description": "Return error if email empty"
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Create user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "type": "integer",
+          "required": true,
+          "description": "User ID for admin requests"
+        },
+        {
+          "name": "HTTP_X_AUTH_TOKEN",
+          "in": "header",
+          "type": "string",
+          "description": "AUTH token"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"email\":\"john-doe52@test.test\",\"token\":\"93367b00ca06b189c38818fc3f7aa9dd78dbcfa76a79696c4acfd62be8746da1\"}"
+            },
+            "description": "Return user with which token requested"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "responses": {
+          "204": {
+            "examples": {
+              "": ""
+            },
+            "description": "Updates requested user"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access"
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "examples": {
+              "": ""
+            },
+            "description": "Destroy user with which token requested"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "summary": "Destroy user",
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  }
+}
