@@ -38,7 +38,7 @@ module Broker
     config.middleware.delete ::ActionDispatch::Flash
 
     config.api_only = true
-    config.middleware.insert_after ActiveRecord::Migration::CheckPending,  Warden::Manager do |manager|
+    config.middleware.insert_before Rack::Head,  Warden::Manager do |manager|
       manager.default_strategies :token
       manager.failure_app = Proc.new do |env|
         ['401', {'Content-Type' => 'application/json'}, [{ error: 'Unauthorized', code: 401 }.to_json]]

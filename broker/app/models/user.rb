@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   before_validation :set_role
   before_create :initialize_token
+  validates :email, presence: true, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
 
   private
 
