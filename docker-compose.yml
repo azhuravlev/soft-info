@@ -5,6 +5,15 @@ volumes:
     external: false
 
 services:
+  swagger:
+    image: swaggerapi/swagger-ui
+    environment:
+      SWAGGER_JSON: /broker/swagger.json
+    volumes:
+      - ./broker/swagger/v1:/broker
+    ports:
+      - 8081:8080
+
   db:
     image: mariadb:10.0
     environment:

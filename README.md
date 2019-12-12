@@ -20,9 +20,7 @@
 
     docker-compose run --rm broker_app bin/rails db:setup
 
-После этого на порту 3123 станет доступен брокер, например для получения списка пользователей:
-
-    curl 'http://localhost:3123/api/v1/users' -H 'X-Auth-Token: 123o123t123u123s' -H "Content-Type:application/json"
+После этого на порту 8081 станет доступен swagger-ui, а на порту 3123 станет доступен брокер
 
 # ToDo
 
