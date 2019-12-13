@@ -9,6 +9,7 @@ class Ability
         can :manage, :all
       else
         can [:read, :destroy], User, id: user.id
+        can [:read, :create], Tool
       end
     else
       can :create, User

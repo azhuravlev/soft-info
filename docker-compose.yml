@@ -26,6 +26,7 @@ services:
 
   broker_app:
     build: ./broker
+    entrypoint: /app/bin/entrypoint.sh
     command: bundle exec puma -C /app/config/puma.rb
     environment:
       RAILS_ROOT: /app
