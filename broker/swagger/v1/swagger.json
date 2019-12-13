@@ -22,15 +22,238 @@
           "example": "Only in admin requests"
         }
       }
+    },
+    "tool": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "SuperTool"
+        },
+        "repo_url": {
+          "type": "string",
+          "example": "gitrepo.url/tool"
+        },
+        "created_at": {
+          "type": "time"
+        },
+        "updated_at": {
+          "type": "time"
+        }
+      }
     }
   },
   "paths": {
+    "/tools": {
+      "parameters": [
+        {
+          "name": "HTTP_X_AUTH_TOKEN",
+          "in": "header",
+          "type": "string",
+          "description": "AUTH token"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "examples": {
+              "application/json; charset=utf-8": "[{\"id\":4,\"name\":\"SuperTool#4\",\"repo_url\":\"SuperTool#4.git.repo\",\"created_at\":\"2019-12-13T09:49:17.817Z\",\"updated_at\":\"2019-12-13T09:49:17.817Z\"},{\"id\":5,\"name\":\"SuperTool#5\",\"repo_url\":\"SuperTool#5.git.repo\",\"created_at\":\"2019-12-13T09:49:17.819Z\",\"updated_at\":\"2019-12-13T09:49:17.819Z\"},{\"id\":6,\"name\":\"SuperTool#6\",\"repo_url\":\"SuperTool#6.git.repo\",\"created_at\":\"2019-12-13T09:49:17.820Z\",\"updated_at\":\"2019-12-13T09:49:17.820Z\"}]"
+            },
+            "description": "Return all the available tools for authorized user"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access for unknown token"
+          }
+        },
+        "tags": [
+          "tools"
+        ],
+        "summary": "Get tools",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"id\":13,\"name\":\"tool\",\"repo_url\":\"repo\",\"created_at\":\"2019-12-13T09:49:17.863Z\",\"updated_at\":\"2019-12-13T09:49:17.863Z\"}"
+            },
+            "description": "Creates tool"
+          },
+          "422": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"repo_url\":[\"can't be blank\"]}"
+            },
+            "description": "Return error for wrong parametrs"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access for unknown token"
+          }
+        },
+        "parameters": [
+          {
+            "name": "tool",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/tool"
+            }
+          }
+        ],
+        "tags": [
+          "tools"
+        ],
+        "summary": "Create tool",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/tools/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "type": "integer",
+          "required": true,
+          "description": "User ID for admin requests"
+        },
+        {
+          "name": "HTTP_X_AUTH_TOKEN",
+          "in": "header",
+          "type": "string",
+          "description": "AUTH token"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "examples": {
+              "application/json; charset=utf-8": "{\"id\":28,\"name\":\"SuperTool#27\",\"repo_url\":\"SuperTool#27.git.repo\",\"created_at\":\"2019-12-13T09:49:17.928Z\",\"updated_at\":\"2019-12-13T09:49:17.928Z\"}"
+            },
+            "description": "Return requested tool"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access"
+          }
+        },
+        "tags": [
+          "tools"
+        ],
+        "summary": "Get tool",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "responses": {
+          "204": {
+            "examples": {
+              "": ""
+            },
+            "description": "Updates requested tool by admin"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access"
+          }
+        },
+        "parameters": [
+          {
+            "name": "tool",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/tool"
+            }
+          }
+        ],
+        "tags": [
+          "tools"
+        ],
+        "summary": "Update tool",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "examples": {
+              "": ""
+            },
+            "description": "Destroy tool if admin request"
+          },
+          "404": {
+            "examples": {
+              "application/json; charset=utf-8": ""
+            },
+            "description": "Return unfound"
+          },
+          "401": {
+            "examples": {
+              "application/json": {
+                "error": "Unauthorized",
+                "code": 401
+              }
+            },
+            "description": "Deny access for user"
+          }
+        },
+        "tags": [
+          "tools"
+        ],
+        "summary": "Destroy tool",
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
     "/users": {
       "get": {
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "[{\"email\":\"john-doe16@test.test\",\"token\":\"f6287bcf7debb59c544d79c3436202376b9e0bec17a117ce1dcd230bc81db6a1\"}]"
+              "application/json; charset=utf-8": "[{\"email\":\"john-doe52@test.test\",\"token\":\"a694a7e56a1658f9a3cd612a90fb8124020e8e5b2585245e8153218cb4ef08df\"}]"
             },
             "description": "Return user"
           },
@@ -64,7 +287,7 @@
         "responses": {
           "201": {
             "examples": {
-              "application/json; charset=utf-8": "{\"email\":\"test@test.com\",\"token\":\"d36d6106cefe84f43042a42c9ab0571250fb32b5e70df7b5ee66d1c85e2fb3b2\"}"
+              "application/json; charset=utf-8": "{\"email\":\"test@test.com\",\"token\":\"a12b727ca258e94b87b2fb16e96e61ee04a5f60afe27e2f9177d45bf0ea8d5ce\"}"
             },
             "description": "Creates user with given email"
           },
@@ -117,7 +340,7 @@
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "{\"email\":\"john-doe52@test.test\",\"token\":\"93367b00ca06b189c38818fc3f7aa9dd78dbcfa76a79696c4acfd62be8746da1\"}"
+              "application/json; charset=utf-8": "{\"email\":\"john-doe88@test.test\",\"token\":\"999b76f30751e92b4f68ad5b38246bf0a74240cd7c322b1ff0d7963177002bb0\"}"
             },
             "description": "Return user with which token requested"
           },
