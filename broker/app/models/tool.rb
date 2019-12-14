@@ -8,12 +8,10 @@ class Tool < ApplicationRecord
   private
 
   def notify_add
-    SendgridClient.new.notify_add(self)
-    SlackClient.new.notify_add(self)
+    NotificationClient.new.notify_add(self)
   end
 
   def notify_changes
-    SendgridClient.new.notify_changes(self)
-    SlackClient.new.notify_changes(self)
+    NotificationClient.new.notify_changes(self)
   end
 end
