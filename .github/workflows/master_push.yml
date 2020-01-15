@@ -1,0 +1,28 @@
+name: Compose Build test
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Build image"
+        working-directory: ./broker
+        run: docker build . --tag soft_info-broker:$(date +%s)
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Docker-compose Build"
+        run: |
+          docker-compose --log-level INFO up -d db
+          docker-compose --log-level INFO up -d broker_app
+          docker-compose run --rm broker_app bundle exec rake db:setup
+      - name: "Docker DB Logs"
+        run: docker-compose logs db
+      - name: "Docker broker Logs"
+        run: docker-compose logs broker_app
+      - name: "Get broker status"
+        run: docker run --network container:broker_app appropriate/curl -s --retry 10 --retry-connrefused http://localhost:3000/status
