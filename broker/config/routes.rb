@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'status' => 'status#index'
+
   root to: redirect('api/v1')
 end
