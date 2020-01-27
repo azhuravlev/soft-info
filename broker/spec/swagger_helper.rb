@@ -18,18 +18,24 @@ RSpec.configure do |config|
           user: {
               type: :object,
               properties: {
-                  email: { type: :string, example: 'test@test.test' },
-                  token: { type: :string, example: '123123123123' },
-                  role: { type: :string, example: 'Only in admin requests' }
+                  user: {
+                      type: :object,
+                      properties: {
+                          email: { type: :string, example: 'test@test.test' }
+                      }
+                  }
               }
           },
           tool: {
               type: :object,
               properties: {
-                  name: { type: :string, example: 'SuperTool' },
-                  repo_url: { type: :string, example: 'gitrepo.url/tool' },
-                  created_at: { type: :time },
-                  updated_at: { type: :time }
+                  tool: {
+                      type: :object,
+                      properties: {
+                          name: { type: :string, example: 'SuperTool' },
+                          repo_url: { type: :string, example: 'gitrepo.url/tool' }
+                      }
+                  }
               }
           }
       }

@@ -6,14 +6,14 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
   let!(:admin) { create(:user, role: 'admin') }
 
   path '/tools' do
-    parameter 'HTTP_X_AUTH_TOKEN', in: :header, type: :string, description: "AUTH token"
+    parameter 'X-AUTH-TOKEN', in: :header, type: :string, description: "AUTH token"
 
     get(summary: 'Get tools') do
       produces 'application/json'
       tags :tools
 
       response(200, description: 'Return all the available tools for authorized user') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
 
         it 'Return 3 tools' do
           body = JSON(response.body)
@@ -22,7 +22,7 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny access for unknown token') do
-        let(:'HTTP_X_AUTH_TOKEN') { "unknown" }
+        let(:'X-AUTH-TOKEN') { "unknown" }
       end
     end
 
@@ -40,11 +40,11 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       let(:tool) { { tool: { name: 'tool', repo_url: 'repo' } } }
 
       response(201, description: 'Creates tool') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
       end
 
       response(422, description: 'Return error for wrong parametrs') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
         let(:tool) { { tool: { name: 'tool' } } }
 
         it 'Returns error' do
@@ -54,21 +54,21 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny access for unknown token') do
-        let(:'HTTP_X_AUTH_TOKEN') { "unknown" }
+        let(:'X-AUTH-TOKEN') { "unknown" }
       end
     end
   end
 
   path '/tools/{id}' do
-    parameter :id, in: :path, type: :integer, required: true, description: 'User ID for admin requests'
-    parameter 'HTTP_X_AUTH_TOKEN', in: :header, type: :string, description: "AUTH token"
+    parameter :id, in: :path, type: :integer, required: true, description: 'Tool ID'
+    parameter 'X-AUTH-TOKEN', in: :header, type: :string, description: "AUTH token"
 
     get(summary: 'Get tool') do
       produces 'application/json'
       tags :tools
 
       response(200, description: 'Return requested tool') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
         let(:id) { tools.last.id }
 
         it 'Return tool' do
@@ -78,12 +78,12 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       end
 
       response(404, description: 'Return unfound') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
         let(:id) { "any_id" }
       end
 
       response(401, description: 'Deny access') do
-        let(:'HTTP_X_AUTH_TOKEN') { 'unknown' }
+        let(:'X-AUTH-TOKEN') { 'unknown' }
         let(:id) { tools.last.id }
       end
     end
@@ -101,17 +101,17 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       let(:tool) { { tool: { name: 'tool', repo_url: 'repo' } } }
 
       response(204, description: 'Updates requested tool by admin') do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
         let(:id) { tools.last.id }
       end
 
       response(404, description: 'Return unfound') do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
         let(:id) { "any_id" }
       end
 
       response(401, description: 'Deny access') do
-        let(:'HTTP_X_AUTH_TOKEN') { 'unknown' }
+        let(:'X-AUTH-TOKEN') { 'unknown' }
         let(:id) { tools.last.id }
       end
     end
@@ -122,7 +122,7 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       let(:id) { tools.last.id }
 
       response(204, description: 'Destroy tool if admin request') do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         it 'Tool not exists' do
           expect(Tool.find_by(id: id)).to be_nil
@@ -130,13 +130,13 @@ RSpec.describe 'Tools', type: :request, capture_examples: true do
       end
 
       response(404, description: 'Return unfound') do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         let(:id) { "any_id" }
       end
 
       response(401, description: 'Deny access for user') do
-        let(:'HTTP_X_AUTH_TOKEN') { user.token }
+        let(:'X-AUTH-TOKEN') { user.token }
       end
     end
   end

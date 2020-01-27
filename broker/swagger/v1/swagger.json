@@ -9,36 +9,32 @@
     "user": {
       "type": "object",
       "properties": {
-        "email": {
-          "type": "string",
-          "example": "test@test.test"
-        },
-        "token": {
-          "type": "string",
-          "example": "123123123123"
-        },
-        "role": {
-          "type": "string",
-          "example": "Only in admin requests"
+        "user": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "test@test.test"
+            }
+          }
         }
       }
     },
     "tool": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string",
-          "example": "SuperTool"
-        },
-        "repo_url": {
-          "type": "string",
-          "example": "gitrepo.url/tool"
-        },
-        "created_at": {
-          "type": "time"
-        },
-        "updated_at": {
-          "type": "time"
+        "tool": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "SuperTool"
+            },
+            "repo_url": {
+              "type": "string",
+              "example": "gitrepo.url/tool"
+            }
+          }
         }
       }
     }
@@ -47,7 +43,7 @@
     "/tools": {
       "parameters": [
         {
-          "name": "HTTP_X_AUTH_TOKEN",
+          "name": "X-AUTH-TOKEN",
           "in": "header",
           "type": "string",
           "description": "AUTH token"
@@ -57,7 +53,7 @@
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "[{\"id\":4,\"name\":\"SuperTool#4\",\"repo_url\":\"SuperTool#4.git.repo\",\"created_at\":\"2019-12-13T09:49:17.817Z\",\"updated_at\":\"2019-12-13T09:49:17.817Z\"},{\"id\":5,\"name\":\"SuperTool#5\",\"repo_url\":\"SuperTool#5.git.repo\",\"created_at\":\"2019-12-13T09:49:17.819Z\",\"updated_at\":\"2019-12-13T09:49:17.819Z\"},{\"id\":6,\"name\":\"SuperTool#6\",\"repo_url\":\"SuperTool#6.git.repo\",\"created_at\":\"2019-12-13T09:49:17.820Z\",\"updated_at\":\"2019-12-13T09:49:17.820Z\"}]"
+              "application/json; charset=utf-8": "[{\"id\":4,\"name\":\"SuperTool#4\",\"repo_url\":\"SuperTool#4.git.repo\",\"created_at\":\"2020-01-27T05:53:21.999Z\",\"updated_at\":\"2020-01-27T05:53:21.999Z\"},{\"id\":5,\"name\":\"SuperTool#5\",\"repo_url\":\"SuperTool#5.git.repo\",\"created_at\":\"2020-01-27T05:53:22.000Z\",\"updated_at\":\"2020-01-27T05:53:22.000Z\"},{\"id\":6,\"name\":\"SuperTool#6\",\"repo_url\":\"SuperTool#6.git.repo\",\"created_at\":\"2020-01-27T05:53:22.001Z\",\"updated_at\":\"2020-01-27T05:53:22.001Z\"}]"
             },
             "description": "Return all the available tools for authorized user"
           },
@@ -83,7 +79,7 @@
         "responses": {
           "201": {
             "examples": {
-              "application/json; charset=utf-8": "{\"id\":13,\"name\":\"tool\",\"repo_url\":\"repo\",\"created_at\":\"2019-12-13T09:49:17.863Z\",\"updated_at\":\"2019-12-13T09:49:17.863Z\"}"
+              "application/json; charset=utf-8": "{\"id\":13,\"name\":\"tool\",\"repo_url\":\"repo\",\"created_at\":\"2020-01-27T05:53:22.032Z\",\"updated_at\":\"2020-01-27T05:53:22.032Z\"}"
             },
             "description": "Creates tool"
           },
@@ -132,10 +128,10 @@
           "in": "path",
           "type": "integer",
           "required": true,
-          "description": "User ID for admin requests"
+          "description": "Tool ID"
         },
         {
-          "name": "HTTP_X_AUTH_TOKEN",
+          "name": "X-AUTH-TOKEN",
           "in": "header",
           "type": "string",
           "description": "AUTH token"
@@ -145,7 +141,7 @@
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "{\"id\":28,\"name\":\"SuperTool#27\",\"repo_url\":\"SuperTool#27.git.repo\",\"created_at\":\"2019-12-13T09:49:17.928Z\",\"updated_at\":\"2019-12-13T09:49:17.928Z\"}"
+              "application/json; charset=utf-8": "{\"id\":28,\"name\":\"SuperTool#27\",\"repo_url\":\"SuperTool#27.git.repo\",\"created_at\":\"2020-01-27T05:53:22.116Z\",\"updated_at\":\"2020-01-27T05:53:22.116Z\"}"
             },
             "description": "Return requested tool"
           },
@@ -253,7 +249,7 @@
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "[{\"email\":\"john-doe52@test.test\",\"token\":\"a694a7e56a1658f9a3cd612a90fb8124020e8e5b2585245e8153218cb4ef08df\"}]"
+              "application/json; charset=utf-8": "[{\"email\":\"john-doe52@test.test\",\"token\":\"336b2813deb3eff349c7d3285ff8e8a21d70f92842075c10a6af9e78ed68a3d9\"}]"
             },
             "description": "Return user"
           },
@@ -269,7 +265,7 @@
         },
         "parameters": [
           {
-            "name": "HTTP_X_AUTH_TOKEN",
+            "name": "X-AUTH-TOKEN",
             "in": "header",
             "type": "string",
             "description": "AUTH token"
@@ -287,7 +283,7 @@
         "responses": {
           "201": {
             "examples": {
-              "application/json; charset=utf-8": "{\"email\":\"test@test.com\",\"token\":\"a12b727ca258e94b87b2fb16e96e61ee04a5f60afe27e2f9177d45bf0ea8d5ce\"}"
+              "application/json; charset=utf-8": "{\"email\":\"test@test.com\",\"token\":\"ef132be076e36c7a79ed1f2cd3ac84b61ade4db0d3fbaa62c3202d3fc88a107f\"}"
             },
             "description": "Creates user with given email"
           },
@@ -330,7 +326,7 @@
           "description": "User ID for admin requests"
         },
         {
-          "name": "HTTP_X_AUTH_TOKEN",
+          "name": "X-AUTH-TOKEN",
           "in": "header",
           "type": "string",
           "description": "AUTH token"
@@ -340,7 +336,7 @@
         "responses": {
           "200": {
             "examples": {
-              "application/json; charset=utf-8": "{\"email\":\"john-doe88@test.test\",\"token\":\"999b76f30751e92b4f68ad5b38246bf0a74240cd7c322b1ff0d7963177002bb0\"}"
+              "application/json; charset=utf-8": "{\"email\":\"john-doe88@test.test\",\"token\":\"594ed5e7dd4328b071d0a27a49dfbdc21b6508abdc0638f0371943bc9df710e0\"}"
             },
             "description": "Return user with which token requested"
           },

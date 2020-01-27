@@ -7,12 +7,12 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
 
   path '/users' do
     get(summary: 'Get users') do
-      parameter 'HTTP_X_AUTH_TOKEN', in: :header, type: :string, description: "AUTH token"
+      parameter 'X-AUTH-TOKEN', in: :header, type: :string, description: "AUTH token"
       produces 'application/json'
       tags :users
 
       response(200, description: 'Return all the available users for admin') do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         it 'Return 3 users' do
 
@@ -22,7 +22,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(200, description: 'Return user') do
-        let(:'HTTP_X_AUTH_TOKEN') { non_admin_user.token }
+        let(:'X-AUTH-TOKEN') { non_admin_user.token }
 
         it 'Return asked user' do
           body = JSON(response.body)
@@ -32,7 +32,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny access for unknown token') do
-        let(:'HTTP_X_AUTH_TOKEN') { "unknown" }
+        let(:'X-AUTH-TOKEN') { "unknown" }
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
 
   path '/users/{id}' do
     parameter :id, in: :path, type: :integer, required: true, description: 'User ID for admin requests'
-    parameter 'HTTP_X_AUTH_TOKEN', in: :header, type: :string, description: "AUTH token"
+    parameter 'X-AUTH-TOKEN', in: :header, type: :string, description: "AUTH token"
 
     get(summary: 'Get user') do
       produces 'application/json'
@@ -72,7 +72,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       let(:id) { "any_id" }
 
       context "When requested by admin" do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         response(200, description: 'Return requested user') do
           let(:id) { non_admin_user.id }
@@ -89,7 +89,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(200, description: 'Return user with which token requested') do
-        let(:'HTTP_X_AUTH_TOKEN') { non_admin_user.token }
+        let(:'X-AUTH-TOKEN') { non_admin_user.token }
 
         it 'Return user' do
           body = JSON(response.body)
@@ -98,7 +98,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny access') do
-        let(:'HTTP_X_AUTH_TOKEN') { 'unknown' }
+        let(:'X-AUTH-TOKEN') { 'unknown' }
       end
     end
 
@@ -115,7 +115,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       let(:user) { { user: { role: 'admin' } } }
 
       context "When requested by admin" do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         response(204, description: 'Updates requested user') do
           let(:id) { non_admin_user.id }
@@ -127,11 +127,11 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny for self-update by non-admin user') do
-        let(:'HTTP_X_AUTH_TOKEN') { non_admin_user.token }
+        let(:'X-AUTH-TOKEN') { non_admin_user.token }
       end
 
       response(401, description: 'Deny access') do
-        let(:'HTTP_X_AUTH_TOKEN') { 'unknown' }
+        let(:'X-AUTH-TOKEN') { 'unknown' }
       end
     end
 
@@ -141,7 +141,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       let(:id) { "any_id" }
 
       context "When requested by admin" do
-        let(:'HTTP_X_AUTH_TOKEN') { admin.token }
+        let(:'X-AUTH-TOKEN') { admin.token }
 
         response(204, description: 'Destroy requested user') do
           let(:id) { non_admin_user.id }
@@ -157,7 +157,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(204, description: 'Destroy user with which token requested') do
-        let(:'HTTP_X_AUTH_TOKEN') { non_admin_user.token }
+        let(:'X-AUTH-TOKEN') { non_admin_user.token }
 
 
         it 'User not exists' do
@@ -166,7 +166,7 @@ RSpec.describe 'Users', type: :request, capture_examples: true do
       end
 
       response(401, description: 'Deny access') do
-        let(:'HTTP_X_AUTH_TOKEN') { 'unknown' }
+        let(:'X-AUTH-TOKEN') { 'unknown' }
       end
     end
   end

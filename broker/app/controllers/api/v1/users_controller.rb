@@ -47,6 +47,7 @@ class Api::V1::UsersController < ::ApplicationController
   end
 
   def user_params
-    current_user&.role == 'admin' ? params.require(:user).permit(:email, :token, :role) : params.require(:user).permit(:email)
+    raw_params = ActionController::Parameters.new(JSON.parse(request.body.read))
+    current_user&.role == 'admin' ? raw_params.require(:user).permit(:email, :token, :role) : raw_params.require(:user).permit(:email)
   end
 end
