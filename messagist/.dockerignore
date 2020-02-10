@@ -1,0 +1,6 @@
+.git/
+compose/
+ssl/
+.gitlab-ci.yml
+.dockerignore
+.gitignore

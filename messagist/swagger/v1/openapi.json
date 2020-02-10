@@ -1,0 +1,132 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Messagist API V1",
+    "version": "v1"
+  },
+  "paths": {
+    "/message": {
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "description": "Basic http-auth",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "responses": {
+          "202": {
+            "description": "Sends message",
+            "content": {
+              "application/json; charset=utf-8": {
+                "examples": {
+                  "response": {
+                    "value": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Deny access",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "error": "Unauthorized",
+                      "code": 401
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "error": "Unauthorized",
+                      "code": 500
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/message"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "message"
+        ],
+        "summary": "Send message"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:{port}/{basePath}",
+      "description": "The messagist development API server",
+      "variables": {
+        "port": {
+          "default": "3033"
+        },
+        "basePath": {
+          "default": "/v1"
+        }
+      }
+    }
+  ],
+  "externalDocs":{
+    "description": "Broker API Documentation",
+    "url": "http://127.0.0.1:8081"
+  },
+  "components": {
+    "schemas": {
+      "message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "example": "test@test.test"
+              },
+              "from": {
+                "type": "string",
+                "example": "test@test.test"
+              },
+              "title": {
+                "type": "string",
+                "example": "Best message"
+              },
+              "body": {
+                "type": "string",
+                "example": "Soft was changed"
+              },
+              "attrs": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ volumes:
     external: false
 
 services:
-  swagger:
+  broker_swagger:
     image: swaggerapi/swagger-ui
     environment:
       SWAGGER_JSON: /broker/openapi.json
@@ -13,6 +13,15 @@ services:
       - ./broker/swagger/v1:/broker
     ports:
       - 8081:8080
+
+  messagist_swagger:
+    image: swaggerapi/swagger-ui
+    environment:
+      SWAGGER_JSON: /messagist/openapi.json
+    volumes:
+      - ./messagist/swagger/v1:/messagist
+    ports:
+      - 8082:8080
 
   db:
     image: mariadb:10.0
@@ -35,9 +44,9 @@ services:
       ADMIN_TOKEN: 123o123t123u123s
       DATABASE_URL: mysql2://root:123123@db:3306/broker_development
       TEST_DATABASE_URL: mysql2://root:123123@db:3306/broker_test
-      SENDGRID_API_KEY: ''
-      SLACK_API_TOKEN: ''
-      SLACK_CHANNEL: ''
+      MESSAGIST_API_URL: http://messagist_app:3033/api/v1
+      MESSAGIST_API_LOGIN: broker
+      MESSAGIST_API_PASS: broker_pass
     depends_on:
       - db
     ports:
@@ -46,3 +55,28 @@ services:
       - ./broker:/app
     links:
       - db
+
+  messagist_app:
+    build: ./messagist
+    command: bundle exec puma -C /config/puma.rb
+    environment:
+      APP_PORT: 3033
+      SMTP_ADDRESS: mailcatcher
+      SMTP_PORT: 1025
+      API_LOGIN: broker
+      API_PASS: broker_pass
+      SLACK_API_TOKEN: ''
+      SLACK_CHANNEL: ''
+      RACK_ENV: development
+    depends_on:
+      - mailcatcher
+    links:
+      - mailcatcher
+    ports:
+      - 3033:3033
+
+  mailcatcher:
+    build: ./mailcatcher
+    ports:
+      - 1025:1025
+      - 1080:1080

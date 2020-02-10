@@ -8,10 +8,10 @@ class Tool < ApplicationRecord
   private
 
   def notify_add
-    NotificationClient.new.notify_add(self)
+    NotificationClient.notify_add(self)
   end
 
   def notify_changes
-    NotificationClient.new.notify_changes(self)
+    NotificationClient.notify_changes(self)
   end
 end
