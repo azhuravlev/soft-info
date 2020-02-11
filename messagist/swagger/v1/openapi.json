@@ -4,6 +4,9 @@
     "title": "Messagist API V1",
     "version": "v1"
   },
+  "security": [
+    { "basicAuth": [] }
+  ],
   "paths": {
     "/message": {
       "parameters": [
@@ -97,6 +100,12 @@
     "url": "http://127.0.0.1:8081"
   },
   "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
     "schemas": {
       "message": {
         "type": "object",
