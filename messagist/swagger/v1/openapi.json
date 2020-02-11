@@ -87,7 +87,7 @@
           "default": "3033"
         },
         "basePath": {
-          "default": "/v1"
+          "default": "v1"
         }
       }
     }

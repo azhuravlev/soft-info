@@ -7,13 +7,13 @@
   "servers": [
     {
       "url": "http://127.0.0.1:{port}/{basePath}",
-      "description": "The production API server",
+      "description": "The development broker API server",
       "variables": {
         "port": {
           "default": "3033"
         },
         "basePath": {
-          "default": "/api/v1"
+          "default": "api/v1"
         }
       }
     }
