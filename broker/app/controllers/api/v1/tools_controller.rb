@@ -2,11 +2,21 @@ class Api::V1::ToolsController < ::ApplicationController
   load_and_authorize_resource :tool
 
   def index
-    render json: @tools.to_json
+    if stale?(@tools)
+      tools_json = Rails.cache.fetch([:tools, @tools.cache_version], exptires_in: 1.hour) do
+        @tools.to_json
+      end
+      render json: tools_json
+    end
   end
 
   def show
-    render json: @tool.to_json
+    if stale?(@tool)
+      tool_json = Rails.cache.fetch([:tool, @tool.cache_version], exptires_in: 1.hour) do
+        @tool.to_json
+      end
+      render json: tool_json
+    end
   end
 
   def create
