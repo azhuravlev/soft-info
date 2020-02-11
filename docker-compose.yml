@@ -42,8 +42,8 @@ services:
       RAILS_ROOT: /app
       RAILS_ENV: development
       ADMIN_TOKEN: 123o123t123u123s
-      DATABASE_URL: mysql2://root:123123@db:3306/broker_development
-      TEST_DATABASE_URL: mysql2://root:123123@db:3306/broker_test
+      DATABASE_URL: mysql2://root:123123@db:3306/broker_app_development
+      TEST_DATABASE_URL: mysql2://root:123123@db:3306/broker_app_test
       MESSAGIST_API_URL: http://messagist_app:3033/api/v1
       MESSAGIST_API_LOGIN: broker
       MESSAGIST_API_PASS: broker_pass
