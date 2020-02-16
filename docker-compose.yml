@@ -38,7 +38,7 @@ services:
     build: ./broker
     entrypoint: /app/bin/entrypoint.sh
     command: bundle exec puma -C /app/config/puma.rb
-    environment:
+    environment: &environment
       RAILS_ROOT: /app
       RAILS_ENV: development
       RAILS_DEV_CACHE: allowed
@@ -48,14 +48,28 @@ services:
       MESSAGIST_API_URL: http://messagist_app:3033/api/v1
       MESSAGIST_API_LOGIN: broker
       MESSAGIST_API_PASS: broker_pass
-    depends_on:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    depends_on: &deps
       - db
+      - rabbitmq
     ports:
       - "${APP_PORT:-3123}:3000"
-    volumes:
+    volumes: &volumes
       - ./broker:/app
-    links:
+    links: &links
       - db
+      - rabbitmq
+
+  broker_workers:
+    image: soft-info_broker_app:latest
+    entrypoint: /app/bin/entrypoint.sh
+    command: bundle exec rake sneakers:run
+    environment:
+      <<: *environment
+      WORKERS: PersonWorker
+    volumes: *volumes
+    depends_on: *deps
+    links: *links
 
   messagist_app:
     build: ./messagist
@@ -81,3 +95,18 @@ services:
     ports:
       - 1025:1025
       - 1080:1080
+
+  github-worker:
+    build: ./github-worker
+    volumes:
+      - ./github-worker:/worker
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672

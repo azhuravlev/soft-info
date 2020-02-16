@@ -6,6 +6,7 @@ class NotificationClient
       message = message_params("Soft #{soft.name} was added", "Soft #{soft.name} located at #{soft.repo_url} was added", soft)
       message[:to] = User.all.distinct.pluck(:email).sort
       message[:from] = 'soft-info@dev.com'
+      Sneakers.publish(soft.to_json, to_queue: "tools")
       send(message)
     end
 
@@ -27,7 +28,7 @@ class NotificationClient
     end
 
     def send(message)
-      return unless messagist_url = ENV.fetch('MESSAGIST_API_URL')
+      return unless (messagist_url = ENV.fetch('MESSAGIST_API_URL')).present?
       uri = URI.join(messagist_url, '/v1/message')
 
       http = ::Net::HTTP.new(uri.host, uri.port)

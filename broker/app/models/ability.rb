@@ -10,6 +10,7 @@ class Ability
       else
         can [:read, :destroy], User, id: user.id
         can [:read, :create], Tool
+        can [:read], Person
       end
     else
       can :create, User

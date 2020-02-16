@@ -37,6 +37,8 @@ module Broker
     config.middleware.delete ::ActionDispatch::Session::CookieStore
     config.middleware.delete ::ActionDispatch::Flash
 
+    config.autoload_paths += %W(#{config.root}/workers)
+
     config.api_only = true
     config.middleware.insert_before Rack::Head,  Warden::Manager do |manager|
       manager.default_strategies :token
