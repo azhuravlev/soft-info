@@ -1,14 +1,20 @@
 FROM ruby:2.6.5-alpine3.10
 MAINTAINER Alexey Zhuravlev <alexey.g.zhuravlev@gmail.com>
-LABEL Description="Messagist for sotf-info" Version="2.0"
+LABEL Description="Messagist for sotf-info" Version="3.0"
 
-RUN apk --update add --no-cache --virtual build-dependencies make gcc libc-dev
+RUN apk add --no-cache git
 
-ADD Gemfile* ./
-RUN bundle install
+ADD . /worker
 
-COPY . .
+WORKDIR /worker
 
-RUN apk del build-dependencies
+RUN apk --update add --virtual build_deps \
+                               build-base \
+                               ruby-dev \
+                               libc-dev \
+                               linux-headers \
+                               openssl-dev && \
+    bundle --jobs=4 --retry=3 && \
+    apk del build_deps
 
-CMD [ "bin/entry" ]
+CMD foreman start

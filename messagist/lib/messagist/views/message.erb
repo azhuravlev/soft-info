@@ -1,15 +1,15 @@
-* Email    : <%= @message['title'] %>
-* From     : <%= @message['from'] %>
-* To       : <%= @message['to'] %>
+* Email    : <%= message['title'] %>
+* From     : <%= message['from'] %>
+* To       : <%= message['to'] %>
 
-<% if @message['attrs'] %>
+<% if message['attrs'] %>
   Params:
 
-  <% @message['attrs'].each do |k,v| %>
+  <% message['attrs'].each do |k,v| %>
     * <%= k %>: <%= v %>
   <% end %>
 <% end %>
 
 Content:
 
-<%= @message['body'].to_s %>
+<%= message['body'].to_s %>

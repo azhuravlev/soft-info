@@ -3,7 +3,6 @@
 source 'http://rubygems.org'
 
 gem 'pony'
-gem 'puma'
-gem 'sinatra', require: false
-gem 'sinatra-contrib', require: false
+gem "foreman"
+gem "sneakers"
 gem 'slack-ruby-client'

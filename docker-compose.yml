@@ -45,9 +45,6 @@ services:
       ADMIN_TOKEN: 123o123t123u123s
       DATABASE_URL: mysql2://root:123123@db:3306/broker_app_development
       TEST_DATABASE_URL: mysql2://root:123123@db:3306/broker_app_test
-      MESSAGIST_API_URL: http://messagist_app:3033/api/v1
-      MESSAGIST_API_LOGIN: broker
-      MESSAGIST_API_PASS: broker_pass
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
     depends_on: &deps
       - db
@@ -73,18 +70,17 @@ services:
 
   messagist_app:
     build: ./messagist
-    command: bundle exec puma -C /config/puma.rb
     environment:
       APP_PORT: 3033
       SMTP_ADDRESS: mailcatcher
       SMTP_PORT: 1025
-      API_LOGIN: broker
-      API_PASS: broker_pass
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
       SLACK_API_TOKEN: ''
       SLACK_CHANNEL: ''
       RACK_ENV: development
     depends_on:
       - mailcatcher
+      - rabbitmq
     links:
       - mailcatcher
     ports:

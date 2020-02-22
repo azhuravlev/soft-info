@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require 'bundler/setup'
+root = File.expand_path('../lib', __dir__)
+$: << root
+require 'messagist/worker'
+require 'sneakers/runner'
+
+Sneakers.configure(amqp: ENV['RABBITMQ_URL'], daemonize: false, log: STDOUT)
+Sneakers.logger.level = Logger::INFO
+
+r = Sneakers::Runner.new([ Messagist::Worker ])
+r.run
