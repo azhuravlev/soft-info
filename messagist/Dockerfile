@@ -17,4 +17,4 @@ RUN apk --update add --virtual build_deps \
     bundle --jobs=4 --retry=3 && \
     apk del build_deps
 
-CMD foreman start
+CMD ./wait-for-it.sh rabbitmq:5672 -- foreman start

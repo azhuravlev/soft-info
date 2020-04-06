@@ -37,7 +37,7 @@ services:
     container_name: broker_app
     build: ./broker
     entrypoint: /app/bin/entrypoint.sh
-    command: bundle exec puma -C /app/config/puma.rb
+    command: ./wait-for-it.sh rabbitmq:5672 -- bundle exec puma -C /app/config/puma.rb
     environment: &environment
       RAILS_ROOT: /app
       RAILS_ENV: development
