@@ -1,6 +1,6 @@
 FROM ruby:2.6.5-alpine3.10
 MAINTAINER Alexey Zhuravlev <alexey.g.zhuravlev@gmail.com>
-LABEL Description="Messagist for sotf-info" Version="3.0"
+LABEL Description="Github-worker for sotf-info" Version="1.0"
 
 RUN apk add --no-cache git
 

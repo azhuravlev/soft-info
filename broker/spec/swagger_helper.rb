@@ -37,6 +37,19 @@ RSpec.configure do |config|
                       }
                   }
               }
+          },
+          person: {
+              type: :object,
+              properties: {
+                  tool: {
+                      type: :object,
+                      properties: {
+                          name: { type: :string, example: 'Best Person' },
+                          link: { type: :string, example: 'gitPerson.url' },
+                          info: { type: :object }
+                      }
+                  }
+              }
           }
       }
     }
